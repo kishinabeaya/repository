@@ -14,3 +14,7 @@
 {"ts": "2026-11-06T18:23:04", "tool": "Bash", "command": "python3 - <<'EOF'\nfrom pathlib import Path\np=Path(\"company/tasks/T-0001.md\"); t=p.read_text()\nt=t.replace(\"status: review\",\"status: rejected\",1)\nfb=\"\"\"## Feedback\n- 2026-11-06 CoS（差し戻し1回目、Analyst判定FIX"}
 {"ts": "2026-11-06T18:23:19", "tool": "Write", "file": "company/reports/daily/2026-11-06.md"}
 {"ts": "2026-11-06T18:23:24", "tool": "Bash", "command": "git add -A && git commit -q -m \"daily: 2026-11-06\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01K1oci5DuavHKHMMrxLgr5c\" && git push -q origi"}
+{"ts": "2026-11-06T18:24:05", "tool": "Bash", "command": "git status --short && git add -A && git commit -q -m \"chore: activity log\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_01K1oci5DuavHKHMMrxLgr"}
+{"ts": "2026-11-06T18:25:57", "tool": "Edit", "file": ".claude/hooks/activity_log.py"}
+{"ts": "2026-11-06T18:25:57", "tool": "Edit", "file": ".claude/hooks/activity_log.py"}
+{"ts": "2026-11-06T18:25:57", "tool": "Edit", "file": ".claude/settings.json"}
