@@ -1,0 +1,19 @@
+# タスク種別 → 担当・レビュアー・既定の権限レベル
+# CoSはタスク作成時にこの表に従う。該当がない場合は最も近い種別を選び、日報で報告する。
+routes:
+  market_research:   { owner: strategist, reviewer: analyst, level: L0 }
+  business_plan:     { owner: strategist, reviewer: analyst, level: L2 }   # 事業開始・価格はCEO承認
+  pricing:           { owner: strategist, reviewer: analyst, level: L2 }
+  product_spec:      { owner: builder,    reviewer: analyst, level: L1 }
+  product_build:     { owner: builder,    reviewer: analyst, level: L1 }
+  copywriting:       { owner: creator,    reviewer: analyst, level: L1 }
+  publish_content:   { owner: creator,    reviewer: analyst, level: L2 }   # 外部公開
+  launch_plan:       { owner: marketer,   reviewer: analyst, level: L1 }
+  marketing_action:  { owner: marketer,   reviewer: analyst, level: L2 }   # 投稿・出品など外部に出るもの
+  kpi_report:        { owner: analyst,    reviewer: cos,     level: L0 }
+  experiment_review: { owner: analyst,    reviewer: cos,     level: L0 }
+
+escalation:
+  rejected_twice: ceo        # 同じタスクが2回差し戻されたらCEOへ
+  overdue_days: 3            # 期限を3日過ぎたら日報で警告
+  max_agent_calls_daily: 3   # Proプランの使用量節約
