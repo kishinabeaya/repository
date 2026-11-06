@@ -1,0 +1,54 @@
+# AI社員名簿。社員を追加するときは、ここに1件追記し、
+# .claude/agents/<id>.md を company/templates/agent.md から作成し、
+# org/routing.yaml に担当タスク種別を追加する。
+company: AI COMPANY OS
+ceo:
+  id: ceo
+  type: human
+  authority: [経営目標, 重要な意思決定, L2承認]
+
+members:
+  - id: cos
+    title: Chief of Staff
+    department: executive
+    implementation: main-session   # CLAUDE.md で定義。社員を呼び出せる唯一の存在
+    status: active
+  - id: strategist
+    title: Strategist（市場調査・事業企画）
+    department: strategy
+    implementation: subagent
+    model: sonnet
+    writes: [company/knowledge/, company/strategy/]
+    status: active
+  - id: builder
+    title: Product Builder（商品開発）
+    department: product
+    implementation: subagent
+    model: sonnet
+    writes: [company/products/]
+    status: active
+  - id: creator
+    title: Content Creator（制作）
+    department: product
+    implementation: subagent
+    model: sonnet
+    writes: [company/content/drafts/]
+    status: active
+  - id: marketer
+    title: Growth Marketer（マーケティング）
+    department: growth
+    implementation: subagent
+    model: sonnet
+    writes: [company/marketing/]
+    status: active
+  - id: analyst
+    title: Analyst（分析・品質・改善）
+    department: analytics
+    implementation: subagent
+    model: sonnet
+    writes: [company/metrics/, company/reviews/]
+    status: active
+
+# 将来の部門例（未稼働）
+# departments:
+#   growth: { lead: marketer, members: [seo, sns, ads] }
