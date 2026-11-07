@@ -93,3 +93,4 @@
 {"ts": "2026-11-07T11:56:44", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0008.md"}
 {"ts": "2026-11-07T11:58:22", "tool": "Write", "file": "company/knowledge/research/2026-11-customer-insight/analysis.md"}
 {"ts": "2026-11-07T14:28:47", "tool": "Write", "file": "company/decisions/D-0012.md"}
+{"ts": "2026-11-07T14:29:49", "tool": "Write", "file": "company/decisions/D-0013.md"}
