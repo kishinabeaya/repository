@@ -74,17 +74,6 @@ SIT = {
 TIMING_PRE = ['(悩ん|困っ|苦しん|迷っ|落ち込ん|辛かっ|つらかっ|不安だっ|不安で|心配で|焦っ|疲れ(て|果て)|眠れ(ず|なく|ない日)|どん底|藁にも|限界|行き詰|詰んで|限界)','(を|が)?(相談|お願い)(したく|したくて|させていただき|させて頂き)','きっかけ','気になって','探して','(つらい|辛い|大変な)時期','本当にきつ']
 LONELY = ['孤独','寂し|淋し','独り|ひとり(ぼっち|で抱え)|一人(ぼっち|で抱え|で悩|で考え)','友(達|人)がいな|友達が少な|相談(できる|する)(人|相手)が(い)?な|話(せる|を聞いてくれる)(人|相手)が(い)?な|誰にも(相談|言え|話せ)','人に(相談|話)できな|話せる(人|相手)']
 
-def main(dump=None):
-    rows, u = load_unique()
-    out = []
-    P = out.append
-    P('# 集計結果（自動）')
-    P('全行 %d / 重複除去後 %d' % (len(rows), len(u)))
-    return rows, u, out
-
-if __name__ == '__main__':
-    main()
-
 # ---------- 人手確認（全文を読んで判定した上書き）----------
 # 具体的な現実の出来事（本人または代理依頼の相手に起きたと書かれているもの。真偽は未検証）
 MANUAL_EVENT = {4,13,60,84,395,950,1083,1749,1819,1820,1822,2142,2148,2149,2155,2435,2439,2480,2484,2501,2503,2508,2510,2527,2530,2559,2560,2561,2567,2568,
@@ -92,3 +81,46 @@ MANUAL_EVENT = {4,13,60,84,395,950,1083,1749,1819,1820,1822,2142,2148,2149,2155,
  2635,2636,2641,2642,2644,2645,2649,2651,2655,2656,2737}
 # 正規表現で拾ったが、出来事の報告ではない（未発生・否定・無関係）
 MANUAL_EVENT_EXCLUDE = {2175,2431,2433,2528,2563,2830,2852,2646,2565,2430,2443,2639,2657,2654}
+
+MANUAL_REPEAT_EXCLUDE = {297, 1116, 2724}   # 反復購入ではない（自己クリーニング継続・過去の経験・体調の記述）
+
+# 変化の分類で使う補助
+ANTIC = ['楽しみ','期待','様子(を)?(見|み)','観察','願っ','いいな|良いな|ばいいな','祈っ','信じて','兆し|兆候']
+UNSPEC_POS = ['(効果|体感|変化).{0,6}(感じ(まし|られ(て|る|ま)|て|る)|実感(でき|し|して)|あり(まし|ます)|あった|が出)','(感じ|実感)(して|でき|られ)(い)?(ます|ました|ている)','よく効|効きます|効果的|効果が(あり|高|すぐ)','体感(あり|が(あり|強|得))','変化(が|も)?(あり|感じ)']
+
+def classify_change(x):
+    """主分類（排他・優先順）。戻り値 (primary, multi-label set)。"""
+    t = x['t']; uid = x['uid']; f = change_flags(t)
+    ev = (uid in MANUAL_EVENT) or (f['event'] and uid not in MANUAL_EVENT_EXCLUDE)
+    if uid in MANUAL_EVENT_EXCLUDE: ev = False
+    labels = set()
+    if ev: labels.add('event')
+    if f['vague']: labels.add('vague')
+    if f['action']: labels.add('action')
+    if f['body']: labels.add('body')
+    if f['sleep']: labels.add('sleep')
+    if f['mind']: labels.add('mind')
+    unspec = has(t, UNSPEC_POS) or has(t, ['効果','体感','実感','変化'])
+    antic = has(t, ANTIC)
+    if f['neg'] and not (labels & {'event','body','sleep','mind'}): primary = 'none_or_antic'
+    elif ev: primary = 'event'
+    elif f['action'] and not (labels & {'body','sleep'}): primary = 'action'
+    elif labels & {'body','sleep'}: primary = 'body'
+    elif 'mind' in labels: primary = 'mind'
+    elif 'vague' in labels: primary = 'vague'
+    elif antic and not has(t, UNSPEC_POS): primary = 'none_or_antic'
+    elif has(t, UNSPEC_POS): primary = 'unspecified'
+    else: primary = 'other'
+    return primary, labels
+
+def repeat_class(x):
+    t = x['t']
+    if x['uid'] in MANUAL_REPEAT_EXCLUDE:
+        return 'b' if has(t, REPEAT_B) else 'none'
+    if has(t, REPEAT_A1): return 'a1'
+    if has(t, REPEAT_A2): return 'a2'
+    if has(t, REPEAT_B): return 'b'
+    return 'none'
+
+def reasons(t):
+    return [k for k, p in REASON.items() if has(t, p)]
