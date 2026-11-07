@@ -109,3 +109,7 @@
 {"ts": "2026-11-07T15:00:09", "tool": "Write", "file": "company/decisions/D-0015.md"}
 {"ts": "2026-11-07T15:01:04", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0014.md"}
 {"ts": "2026-11-07T15:01:05", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0015.md"}
+{"ts": "2026-11-07T15:03:09", "tool": "Write", "agent": "strategist", "file": "company/knowledge/research/2026-11-customer-insight/personas-p4-housewife.md"}
+{"ts": "2026-11-07T15:03:21", "tool": "Edit", "agent": "strategist", "file": "company/knowledge/research/2026-11-customer-insight/personas-p4-housewife.md"}
+{"ts": "2026-11-07T15:03:26", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0012.md"}
+{"ts": "2026-11-07T15:03:27", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0012.md"}

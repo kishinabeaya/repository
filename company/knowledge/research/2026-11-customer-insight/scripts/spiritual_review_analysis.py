@@ -146,3 +146,94 @@ TRIGGER = {
  'お試し・好奇心・価格が手頃': ['お試し|初めて|興味|気になって|気になっていた|お安|手頃|リーズナブル|1,?000円|500円|ワンコイン'],
  '緊急・急に': ['急に|突然|急遽|緊急|至急|当日|すぐに(お願い|頼|対応)'],
 }
+
+# 孤独・相談相手の不在に触れる本文（全文を読んで人手で選定。正規表現では取りこぼし・誤検出があったため）
+LONELY_A = [353, 1061, 1076, 2360, 2676, 2711]          # 話せる相手・理解者・相談相手の不在を直接述べる
+LONELY_B = [917, 1554, 1642, 1651, 1925, 2683]                 # 孤独感・「一人ではない」・居場所のなさ
+LONELY_C = [1395, 1842, 1846]                            # 愚痴・不満を聞いてもらえたことへの言及
+# 批判・負担・依存の兆候（人手確認済み）
+CRITICAL = [746, 689, 1827, 1934]
+DEPEND_PAT = ['何度も(同じ|相談|依頼)|同じ(事|こと)(を)?(何度|繰り返し)','頼り切','依存','やめられ','ジプシー','お金ばかり','毎日(のように)?(占|相談|鑑定)','毎日ヒーリング|毎日のようにお願い','進展もない','お金を使','高額|高い(と|気が|です|けど)|値段が','追加料金|勧められ|勧誘']
+
+TITLE_TERMS = ['叶','変わ','変化','浄化','ブロック解除|ブロック','波動','開運','運気|運勢','金運','復縁','縁結び|ご縁','霊視|霊能','除霊|憑依|エーテルコード','祈祷|ご祈祷|祈願','護符|お守り','引き寄せ','願望|実現','即|最短|当日','効果|効く','好転','幸せ|幸運','エネルギー|氣|気功','癒','チャクラ','遠隔','ヒーリング','厄|お祓い|祓','先祖|供養','治|症状|痛み|不調|病|改善']
+
+def price_bins(prices):
+    bins = [(0,500,'~500円'),(501,1000,'501~1,000円'),(1001,3000,'1,001~3,000円'),(3001,5000,'3,001~5,000円'),(5001,10000,'5,001~10,000円'),(10001,30000,'10,001~30,000円'),(30001,10**9,'30,001円~')]
+    return [(lab, sum(1 for p in prices if lo <= p <= hi)) for lo, hi, lab in bins]
+
+def pct(a, b): return '%.1f%%' % (100.0 * a / b) if b else '-'
+
+def main():
+    import statistics
+    rows, u = load_unique(); N = len(u)
+    L = []; P = L.append
+    P('全行 %d / 重複除去後 %d / サービス数 %d' % (len(rows), N, len(set(x['service_id'] for x in u))))
+    # 1 変化
+    cand = [x for x in u if has(x['t'], CHANGE_CAND) or x['uid'] in MANUAL_EVENT]
+    cls = {x['uid']: classify_change(x) for x in cand}
+    cnt = collections.Counter(p for p, _ in cls.values())
+    P('\n## 1. 変化 候補(機械抽出) %d件 = %s of %d' % (len(cand), pct(len(cand), N), N))
+    for k in ['event','action','body','mind','vague','unspecified','none_or_antic','other']: P('  %s: %d' % (k, cnt[k]))
+    pos = [x for x in cand if cls[x['uid']][0] not in ('none_or_antic', 'other')]
+    P('  変化を述べる(正): %d (%s)' % (len(pos), pct(len(pos), N)))
+    ml = collections.Counter(l for x in pos for l in cls[x['uid']][1])
+    P('  multi-label(正のみ): %s' % dict(ml))
+    ev = [x for x in pos if 'event' in cls[x['uid']][1]]
+    P('  event を含む: %d / サービス別: %s' % (len(ev), collections.Counter(x['service_id'] for x in ev).most_common(6)))
+    # 2 リピート
+    rc = {x['uid']: repeat_class(x) for x in u}
+    rcnt = collections.Counter(rc.values())
+    P('\n## 2. リピート a1=%d a2=%d b=%d none=%d' % (rcnt['a1'], rcnt['a2'], rcnt['b'], rcnt['none']))
+    a1 = [x for x in u if rc[x['uid']] == 'a1']
+    rs = collections.Counter(r for x in a1 for r in reasons(x['t']))
+    P('  a1 理由(multi): %s' % dict(rs))
+    P('  a1 理由なし: %d' % sum(1 for x in a1 if not reasons(x['t'])))
+    # 3 仮説
+    posids = {x['uid'] for x in pos}
+    both_a1 = sum(1 for i in posids if rc[i] == 'a1'); both_a12 = sum(1 for i in posids if rc[i] in ('a1', 'a2')); both_any = sum(1 for i in posids if rc[i] != 'none')
+    nonpos = [x for x in u if x['uid'] not in posids]
+    P('\n## 3. 正の変化 %d件のうち a1=%d (%s) a1+a2=%d (%s) b含む何か=%d (%s)' % (len(posids), both_a1, pct(both_a1, len(posids)), both_a12, pct(both_a12, len(posids)), both_any, pct(both_any, len(posids))))
+    P('  非変化 %d件のうち a1=%d (%s) a1+a2=%d (%s)' % (len(nonpos), sum(1 for x in nonpos if rc[x['uid']] == 'a1'), pct(sum(1 for x in nonpos if rc[x['uid']] == 'a1'), len(nonpos)), sum(1 for x in nonpos if rc[x['uid']] in ('a1','a2')), pct(sum(1 for x in nonpos if rc[x['uid']] in ('a1','a2')), len(nonpos))))
+    P('  a1 %d件のうち変化(正)を述べる: %d (%s)' % (len(a1), sum(1 for x in a1 if x['uid'] in posids), pct(sum(1 for x in a1 if x['uid'] in posids), len(a1))))
+    for k in ['event','body','mind','unspecified']:
+        s = [x for x in pos if cls[x['uid']][0] == k]
+        P('  主分類 %s %d件 のうち a1=%d (%s)' % (k, len(s), sum(1 for x in s if rc[x['uid']] == 'a1'), pct(sum(1 for x in s if rc[x['uid']] == 'a1'), len(s))))
+    # 4 購入前
+    pre = [x for x in u if has(x['t'], PRE)]
+    P('\n## 4. 購入前の状況(PRE一致) %d件 (%s)' % (len(pre), pct(len(pre), N)))
+    tr = collections.Counter(k for x in pre for k in which(x['t'], TRIGGER))
+    P('  きっかけ/状況(multi): %s' % dict(tr.most_common()))
+    sit_any = [x for x in u if has(x['t'], list(sum(SIT.values(), [])))]
+    P('  状況語(SIT)を含む(時制不問): %d (%s)' % (len(sit_any), pct(len(sit_any), N)))
+    P('  SIT別(時制不問): %s' % {k: sum(1 for x in u if has(x['t'], p)) for k, p in SIT.items()})
+    P('  孤独A=%d B=%d C=%d / "孤独"語=%d "寂し|淋し"=%d' % (len(LONELY_A), len(LONELY_B), len(LONELY_C), sum(1 for x in u if '孤独' in x['t']), sum(1 for x in u if re.search('寂し|淋し', x['t']))))
+    dep = [x for x in u if has(x['t'], DEPEND_PAT)]
+    P('  批判・負担・依存の兆候(機械) %d件 / 人手確認 %s' % (len(dep), CRITICAL))
+    # 5 タイトル・価格
+    svc = list(csv.DictReader(open(os.path.join(BASE, 'spiritual-goods-services.csv'), encoding='utf-8')))
+    P('\n## 5. サービス %d件' % len(svc))
+    for plat in ['coconala', 'booth']:
+        s = [r for r in svc if r['platform'] == plat]; pr = [int(r['price']) for r in s if r['price']]
+        P(' %s n=%d 中央値=%s 平均=%.0f 最小=%d 最大=%d' % (plat, len(s), statistics.median(pr), statistics.mean(pr), min(pr), max(pr)))
+        P('  価格帯: %s' % price_bins(pr))
+        P('  タイトル語: %s' % {t[:10]: sum(1 for r in s if re.search(t, r['title'])) for t in TITLE_TERMS})
+    # 補足集計
+    posids2 = {x['uid'] for x in pos}
+    evs = [x for x in pos if 'event' in cls[x['uid']][1]]
+    T = {'お金':'臨時収入|当選|ロト|ボーナス|配当|頂き物|入金|契約率|収入|くじ','恋愛・対人':'彼|連絡|復縁|再会|お付き合い|告白|結婚|仲直り|LINE|誘|会え|離婚|主人|デート|ばったり|電話|人間関係','仕事':'仕事|プロデュース|契約|転職|フリマ|商品が売れ|書類','妊娠・家族':'妊娠|授かり|母|家族|娘'}
+    ct = collections.Counter(([k for k, p in T.items() if re.search(p, x['t'])] or ['その他'])[0] for x in evs)
+    P('\n## 補足')
+    P('  出来事の種類(先頭一致): %s' % dict(ct))
+    P('  出来事72件のうち サービス1400270(恋愛占い)=%d' % sum(1 for x in evs if x['service_id'] == '1400270'))
+    ex = [x for x in u if x['service_id'] != '1400270']; px = [x for x in ex if x['uid'] in posids2]
+    P('  1400270を除く: N=%d 正の変化=%d  a1率(正の変化)=%s a1率(それ以外)=%s' % (len(ex), len(px), pct(sum(1 for x in px if rc[x['uid']] == 'a1'), len(px)), pct(sum(1 for x in ex if x['uid'] not in posids2 and rc[x['uid']] == 'a1'), len(ex) - len(px))))
+    a1s = [x for x in u if rc[x['uid']] == 'a1']; na1 = [x for x in u if rc[x['uid']] != 'a1']
+    P('  正の変化率: a1の中=%s  a1以外=%s' % (pct(sum(1 for x in a1s if x['uid'] in posids2), len(a1s)), pct(sum(1 for x in na1 if x['uid'] in posids2), len(na1))))
+    fr = [x for x in u if re.search('初めて|はじめて|初回|初依頼|初利用', x['t']) and rc[x['uid']] != 'a1']
+    P('  初回言及(a1除く) %d件: 正の変化=%s / 次回意向(b)=%s' % (len(fr), pct(sum(1 for x in fr if x['uid'] in posids2), len(fr)), pct(sum(1 for x in fr if rc[x['uid']] == 'b'), len(fr))))
+    P('  サービス別レビュー数(重複除去後)上位: %s' % collections.Counter(x['service_id'] for x in u).most_common(5))
+    print('\n'.join(L))
+    return rows, u, cand, cls, pos, rc, pre
+
+if __name__ == '__main__':
+    main()
