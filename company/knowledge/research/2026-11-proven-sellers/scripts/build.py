@@ -21,12 +21,13 @@ def family(parent, f):
     if f in ('通話・ビデオ相談', 'チャット・テキスト相談/指導') or parent in CONSULT_PARENTS: return '相談・指導系'
     return '制作代行系'
 
-def band(p):
+def band(p, unit='円'):
+    if unit == '円/分': return '分単価(円/分、電話・チャット時間制)'
     if p == '' : return '価格不明'
     for hi, n in [(1000,'0-999円'),(3000,'1,000-2,999円'),(5000,'3,000-4,999円'),(10000,'5,000-9,999円'),(30000,'10,000-29,999円'),(100000,'30,000-99,999円')]:
         if p < hi: return n
     return '100,000円以上'
-BANDS = ['0-999円','1,000-2,999円','3,000-4,999円','5,000-9,999円','10,000-29,999円','30,000-99,999円','100,000円以上','価格不明']
+BANDS = ['0-999円','1,000-2,999円','3,000-4,999円','5,000-9,999円','10,000-29,999円','30,000-99,999円','100,000円以上','分単価(円/分、電話・チャット時間制)','価格不明']
 
 out = []; reviews = []
 for r in rows:
@@ -35,10 +36,10 @@ for r in rows:
     title = j.get('name') or r['title']
     mp = r['min_price_yen']
     if d and j.get('offers', {}).get('price') is not None and mp == '': mp = j['offers']['price']
-    f = form(title, r['category'], d['provision_text'] if d else '')
+    f = form(title, r['category'])
     cp = os.path.join(CACHE, f"svc-{r['service_id']}.html" if d else f"cat-{r['category_id']}.html")
     fa = datetime.datetime.fromtimestamp(os.path.getmtime(cp)).strftime('%Y-%m-%dT%H:%M:%S')
-    proxy = r['service_rating_count'] * mp if mp != '' else ''
+    proxy = r['service_rating_count'] * mp if (mp != '' and r['price_unit'] == '円') else ''
     ag = j.get('aggregateRating', {})
     o = dict(r); o.update(title=title, min_price_yen=mp,
         rating_count_detail=ag.get('reviewCount', ''),
@@ -46,7 +47,7 @@ for r in rows:
         favorites=d['favorites'] if d else '取得せず', delivery_days=(d['delivery_days'] or '取得できず') if d else '取得せず',
         options_text=(d['options_text'] or 'なし/取得できず') if d else '取得せず',
         provision_text=(d['provision_text'] or '取得できず') if d else '取得せず',
-        delivery_form=f, service_family=family(r['parent_category'], f), price_band=band(mp),
+        delivery_form=f, service_family=family(r['parent_category'], f), price_band=band(mp, r['price_unit']),
         proxy_lower_bound_yen=proxy, detail_page_fetched='yes' if d else 'no', fetched_at=fa)
     o.pop('url'); o['url'] = r['url']
     out.append(o)
@@ -78,7 +79,7 @@ def table(title, g, order=None):
     keys = order or sorted(g, key=lambda k: -g[k][2])
     s = f'\n### {title}\n| 区分 | サービス数 | 評価件数合計 | 代理指標合計(円) | 代理指標の算出対象数 | 1サービス平均の評価件数 | 全体に占める代理指標 |\n|---|---|---|---|---|---|---|\n'
     tot = sum(v[2] for v in g.values())
-    for k in keys:
+    for k in [k for k in keys if k in g]:
         a = g[k]; s += f'| {k} | {a[0]:,} | {a[1]:,} | {a[2]:,} | {a[3]:,} | {a[1]/a[0]:.1f} | {a[2]/tot*100:.1f}% |\n'
     return s
 md = f'\n(重複除去後のサービス数 {len(U)}、全行 {len(out)})\n'

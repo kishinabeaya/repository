@@ -32,21 +32,32 @@ def full_title(b, t):
     return re.sub(r' イメージ\d+$', '', txt(a)) if a else (txt(t.group(1)) if t else '')
 
 def parse_listing(h, cid, parent, cname):
+    """一覧ページの2種類のレイアウト（ブロック型 c-serviceBlockItem / リスト型 c-serviceListItem）に対応。"""
     rows = []
-    parts = h.split('class="c-serviceBlockItem c-searchPageItemBlock')[1:]
+    if 'class="c-serviceBlockItem c-searchPageItemBlock' in h:
+        parts = h.split('class="c-serviceBlockItem c-searchPageItemBlock')[1:]; layout = 'block'
+    else:
+        parts = h.split('class="c-serviceListItem c-searchPageItemList')[1:]; layout = 'list'
     for i, b in enumerate(parts, 1):
         m = re.search(r'href="/services/(\d+)"', b)
         if not m: continue
-        t = re.search(r'c-serviceBlockItemContent_title[^>]*>(.*?)</div>', b, re.S)
+        if layout == 'block':
+            t = re.search(r'c-serviceBlockItemContent_title[^>]*>(.*?)</div>', b, re.S)
+            title = full_title(b, t)
+        else:
+            o = re.search(r'ColContentHeader_overview[^>]*>(.*?)</div>', b, re.S)
+            c = re.search(r'ColContentHeader_catchphrase[^>]*>(.*?)</div>', b, re.S)
+            title = (txt(o.group(1)) if o else '') + (' / ' + txt(c.group(1)) if c else '')
         sc = re.search(r'PriceRating_score[^>]*>\s*([\d.]+)', b)
-        ct = re.search(r'PriceRating_count[^>]*>(.*?)</div>', b, re.S)
-        pr = re.search(r'<strong[^>]*>([\d,]+)</strong>', b[b.find('c-serviceBlockItemContentPrice_price'):] ) if 'c-serviceBlockItemContentPrice_price' in b else None
-        quote = '見積り必須' if '見積り必須' in b else ''
+        ct = re.search(r'PriceRating_count[^>]*>(.*?)</span>', b, re.S)
+        pi = b.find('Price_price')
+        pr = re.search(r'<strong[^>]*>([\d,]+)</strong>\s*(円/分|円)?', b[pi:]) if pi >= 0 else None
+        unit = (pr.group(2) or '円') if pr else ''
         cnt = re.search(r'\(([\d,]+)\)', txt(ct.group(1))) if ct else None
-        rows.append(dict(category_id=cid, parent_category=parent, category=cname, rank_in_category=i, service_id=m.group(1),
-            title=full_title(b, t), min_price_yen=num(pr.group(1)) if pr else '',
-            quote_required=quote, rating_score=sc.group(1) if sc else '', service_rating_count=num(cnt.group(1)) if cnt else 0,
-            url=f"https://coconala.com/services/{m.group(1)}"))
+        rows.append(dict(category_id=cid, parent_category=parent, category=cname, layout=layout, rank_in_category=i,
+            service_id=m.group(1), title=title, min_price_yen=num(pr.group(1)) if pr else '', price_unit=unit,
+            quote_required='見積り必須' if '見積り必須' in b else '', rating_score=sc.group(1) if sc else '',
+            service_rating_count=num(cnt.group(1)) if cnt else 0, url=f"https://coconala.com/services/{m.group(1)}"))
     return rows
 
 def parse_detail(h):
