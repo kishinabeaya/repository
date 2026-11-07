@@ -168,3 +168,6 @@
 {"ts": "2026-11-07T19:31:11", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0019.md"}
 {"ts": "2026-11-07T19:31:16", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0019.md"}
 {"ts": "2026-11-07T20:16:04", "tool": "Write", "file": "company/decisions/D-0018.md"}
+{"ts": "2026-11-07T20:22:13", "tool": "Write", "agent": "strategist", "file": "company/knowledge/research/2026-11-proven-sellers/substitution-and-ai.md"}
+{"ts": "2026-11-07T20:22:19", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0023.md"}
+{"ts": "2026-11-07T20:22:19", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0023.md"}
