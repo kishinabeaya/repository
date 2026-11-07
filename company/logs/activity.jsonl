@@ -40,3 +40,16 @@
 {"ts": "2026-11-07T09:14:19", "tool": "Write", "agent": "strategist", "file": "company/strategy/business-plan-001.md"}
 {"ts": "2026-11-07T09:14:27", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0003.md"}
 {"ts": "2026-11-07T09:14:27", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0003.md"}
+{"ts": "2026-11-07T09:16:23", "tool": "Write", "agent": "analyst", "file": "company/reviews/T-0003.md"}
+{"ts": "2026-11-07T09:16:38", "tool": "Write", "agent": "analyst", "file": "company/reviews/T-0004.md"}
+{"ts": "2026-11-07T09:16:54", "tool": "Write", "agent": "analyst", "file": "company/reviews/T-0005.md"}
+{"ts": "2026-11-07T09:16:59", "tool": "Edit", "agent": "analyst", "file": "company/tasks/T-0003.md"}
+{"ts": "2026-11-07T09:17:02", "tool": "Edit", "agent": "analyst", "file": "company/tasks/T-0004.md"}
+{"ts": "2026-11-07T09:17:04", "tool": "Edit", "agent": "analyst", "file": "company/tasks/T-0005.md"}
+{"ts": "2026-11-07T09:17:40", "tool": "Edit", "agent": "strategist", "file": "company/strategy/business-plan-001.md"}
+{"ts": "2026-11-07T09:17:41", "tool": "Edit", "agent": "strategist", "file": "company/strategy/business-plan-001.md"}
+{"ts": "2026-11-07T09:17:42", "tool": "Edit", "agent": "strategist", "file": "company/strategy/business-plan-001.md"}
+{"ts": "2026-11-07T09:17:43", "tool": "Edit", "agent": "strategist", "file": "company/strategy/business-plan-001.md"}
+{"ts": "2026-11-07T09:17:44", "tool": "Edit", "agent": "strategist", "file": "company/strategy/business-plan-001.md"}
+{"ts": "2026-11-07T09:17:45", "tool": "Edit", "agent": "strategist", "file": "company/strategy/business-plan-001.md"}
+{"ts": "2026-11-07T09:17:46", "tool": "Edit", "agent": "strategist", "file": "company/strategy/business-plan-001.md"}
