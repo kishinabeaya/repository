@@ -107,3 +107,5 @@
 {"ts": "2026-11-07T14:49:52", "tool": "Write", "agent": "strategist", "file": "company/knowledge/research/2026-11-customer-insight/spiritual-goods-literature.md"}
 {"ts": "2026-11-07T15:00:09", "tool": "Write", "file": "company/strategy/service-principles.md"}
 {"ts": "2026-11-07T15:00:09", "tool": "Write", "file": "company/decisions/D-0015.md"}
+{"ts": "2026-11-07T15:01:04", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0014.md"}
+{"ts": "2026-11-07T15:01:05", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0015.md"}
