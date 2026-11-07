@@ -55,6 +55,32 @@ class T(unittest.TestCase):
         self.assertEqual((r["expression"], r["soul_urge"], r["personality"]), (3, 2, 1))
         self.assertIsNone(n.name_numbers("やまだ"))
 
+    def test_sun_sign(self):
+        # 各星座の開始日・終了日と、年またぎ（山羊座）
+        exp = [((1, 1), "山羊座"), ((1, 19), "山羊座"), ((1, 20), "水瓶座"), ((2, 18), "水瓶座"),
+               ((2, 19), "魚座"), ((3, 20), "魚座"), ((3, 21), "牡羊座"), ((4, 19), "牡羊座"),
+               ((4, 20), "牡牛座"), ((5, 20), "牡牛座"), ((5, 21), "双子座"), ((6, 21), "双子座"),
+               ((6, 22), "蟹座"), ((7, 22), "蟹座"), ((7, 23), "獅子座"), ((8, 22), "獅子座"),
+               ((8, 23), "乙女座"), ((9, 22), "乙女座"), ((9, 23), "天秤座"), ((10, 23), "天秤座"),
+               ((10, 24), "蠍座"), ((11, 22), "蠍座"), ((11, 23), "射手座"), ((12, 21), "射手座"),
+               ((12, 22), "山羊座"), ((12, 31), "山羊座"), ((2, 29), "魚座"), ((7, 23), "獅子座")]
+        for (m, d), name in exp:
+            with self.subTest(m=m, d=d):
+                self.assertEqual(n.sun_sign(m, d), name)
+
+    def test_sun_sign_boundary(self):
+        self.assertEqual(n.sun_sign_boundary(7, 23), ["蟹座", "獅子座"])   # 切り替え当日
+        self.assertEqual(n.sun_sign_boundary(7, 22), ["蟹座", "獅子座"])   # 前日
+        self.assertEqual(n.sun_sign_boundary(7, 24), ["蟹座", "獅子座"])   # 翌日
+        self.assertEqual(n.sun_sign_boundary(1, 1), None)
+        self.assertEqual(n.sun_sign_boundary(12, 22), ["射手座", "山羊座"])
+        self.assertEqual(n.sun_sign_boundary(1, 19), ["山羊座", "水瓶座"])
+        self.assertEqual(n.sun_sign_boundary(5, 5), None)
+        self.assertEqual(n.sun_sign_boundary(2, 29), None)
+        # 1992-07-23 は星座の境目、かつ calculate に反映される
+        r = n.calculate(date(1992, 7, 23))
+        self.assertEqual((r["sun_sign"], r["sun_sign_boundary"]), ("獅子座", ["蟹座", "獅子座"]))
+
     def test_flag_and_cli(self):
         self.assertTrue(n.calculate(date(1997, 11, 1))["life_path_differs_by_school"])
         self.assertFalse(n.calculate(date(1992, 7, 23))["life_path_differs_by_school"])
