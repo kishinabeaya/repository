@@ -174,3 +174,5 @@
 {"ts": "2026-11-07T20:45:43", "tool": "Write", "agent": "strategist", "file": "company/strategy/business-ideas-v3.md"}
 {"ts": "2026-11-07T20:45:47", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0024.md"}
 {"ts": "2026-11-07T20:45:54", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0024.md"}
+{"ts": "2026-11-09T07:55:49", "tool": "Write", "file": "company/decisions/D-0019.md"}
+{"ts": "2026-11-09T07:55:54", "tool": "Write", "file": "company/strategy/ceo-profile.md"}
