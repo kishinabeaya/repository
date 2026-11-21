@@ -203,3 +203,12 @@
 {"ts": "2026-11-21T17:50:42", "tool": "Edit", "agent": "analyst", "file": "company/tasks/T-0027.md"}
 {"ts": "2026-11-21T17:50:50", "tool": "Edit", "agent": "analyst", "file": "company/tasks/T-0028.md"}
 {"ts": "2026-11-21T17:53:49", "tool": "Write", "file": "company/inbox/ceo/A-0005.md"}
+{"ts": "2026-11-21T18:20:54", "tool": "Write", "file": "company/knowledge/research/2026-11-proven-sellers/claude-code-candidates.md"}
+{"ts": "2026-11-21T18:21:02", "tool": "Write", "file": "company/decisions/D-0022.md"}
+{"ts": "2026-11-21T18:21:33", "tool": "Edit", "file": "company/inbox/ceo/A-0004.md"}
+{"ts": "2026-11-21T18:21:33", "tool": "Edit", "file": "company/inbox/ceo/A-0005.md"}
+{"ts": "2026-11-21T18:21:34", "tool": "Edit", "file": "company/inbox/ceo/A-0004.md"}
+{"ts": "2026-11-21T18:21:36", "tool": "Edit", "file": "company/inbox/ceo/A-0005.md"}
+{"ts": "2026-11-21T18:21:37", "tool": "Edit", "file": "company/strategy/revenue-plan-30k.md"}
+{"ts": "2026-11-21T18:21:42", "tool": "Write", "file": "company/tasks/T-0029.md"}
+{"ts": "2026-11-21T18:21:46", "tool": "Write", "file": "company/tasks/T-0030.md"}
