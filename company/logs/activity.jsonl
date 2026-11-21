@@ -215,3 +215,5 @@
 {"ts": "2026-11-21T18:34:23", "tool": "Write", "file": "company/decisions/D-0023.md"}
 {"ts": "2026-11-21T18:34:24", "tool": "Edit", "file": "company/strategy/constraints.md"}
 {"ts": "2026-11-21T18:36:05", "tool": "Write", "file": "company/decisions/D-0024.md"}
+{"ts": "2026-11-21T18:41:45", "tool": "Write", "agent": "builder", "file": "company/products/delivery-pipeline/README.md"}
+{"ts": "2026-11-21T18:41:57", "tool": "Edit", "agent": "builder", "file": "company/tasks/T-0030.md"}

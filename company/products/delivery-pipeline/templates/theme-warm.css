@@ -1,0 +1,15 @@
+/* テーマ: warm（あたたかい・茶系） */
+:root {
+  --bg: #fffaf3;
+  --text: #3b2a1e;
+  --muted: #5c4533;
+  --accent: #8a4b12;
+  --on-accent: #ffffff;
+  --link: #8a4b12;
+  --soft: #fdebd3;
+  --border: #e8c9a0;
+  --footer-bg: #3b2a1e;
+  --footer-text: #fff7ec;
+  --banner-bg: #fef08a;
+  --banner-text: #3b2a1e;
+}

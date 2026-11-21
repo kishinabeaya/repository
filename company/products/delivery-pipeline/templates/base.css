@@ -1,0 +1,50 @@
+/* 共通のスタイル。外部フォント・画像・スクリプトは使わない（軽量）。モバイルファースト。 */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", "Yu Gothic", Meiryo, sans-serif;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--text);
+  background: var(--bg);
+}
+.wrap { max-width: 960px; margin: 0 auto; padding: 0 1rem; }
+a { color: var(--link); text-underline-offset: 0.2em; }
+a:focus-visible, .btn:focus-visible { outline: 3px solid var(--text); outline-offset: 2px; }
+.skip { position: absolute; left: -999px; top: 0; background: var(--bg); color: var(--text); padding: 0.5rem 1rem; }
+.skip:focus { left: 0; z-index: 10; }
+.sample-banner { background: var(--banner-bg); color: var(--banner-text); text-align: center; font-weight: bold; padding: 0.6rem 1rem; }
+.site-header { border-bottom: 1px solid var(--border); padding: 0.75rem 0; }
+.site-header .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.brand { margin: 0; font-weight: bold; font-size: 1.1rem; }
+nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; }
+nav a { display: inline-block; padding: 0.5rem 0; }
+.hero { background: var(--soft); color: var(--text); padding: 2.5rem 0; }
+.hero h1 { font-size: 1.6rem; line-height: 1.4; margin: 0 0 1rem; }
+.hero p { margin: 0 0 1.25rem; }
+.hero .deco { width: 64px; height: 64px; display: block; margin-bottom: 1rem; fill: var(--accent); }
+.btn { display: inline-block; background: var(--accent); color: var(--on-accent); padding: 0.8rem 1.6rem; border-radius: 6px; text-decoration: none; font-weight: bold; min-height: 44px; }
+section { padding: 2rem 0; }
+h2 { font-size: 1.35rem; line-height: 1.4; margin: 0 0 1rem; padding-bottom: 0.4rem; border-bottom: 3px solid var(--accent); }
+h3 { font-size: 1.1rem; margin: 0 0 0.4rem; }
+.grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+.card { background: var(--soft); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.2rem; }
+.card p { margin: 0; }
+.price { color: var(--muted); font-weight: bold; margin-top: 0.5rem !important; }
+.note { color: var(--muted); font-size: 0.95rem; }
+ol.steps { padding-left: 1.4rem; }
+ol.steps li { margin-bottom: 0.5rem; }
+dl.faq dt { font-weight: bold; margin-top: 1rem; }
+dl.faq dd { margin: 0.25rem 0 0; }
+.cta { background: var(--soft); color: var(--text); text-align: center; }
+.site-footer { background: var(--footer-bg); color: var(--footer-text); padding: 1.5rem 0; font-size: 0.9rem; }
+.site-footer p { margin: 0.25rem 0; }
+@media (min-width: 640px) {
+  .hero h1 { font-size: 2.1rem; }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 900px) {
+  .grid.three { grid-template-columns: repeat(3, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
