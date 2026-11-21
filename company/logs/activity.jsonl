@@ -217,3 +217,8 @@
 {"ts": "2026-11-21T18:36:05", "tool": "Write", "file": "company/decisions/D-0024.md"}
 {"ts": "2026-11-21T18:41:45", "tool": "Write", "agent": "builder", "file": "company/products/delivery-pipeline/README.md"}
 {"ts": "2026-11-21T18:41:57", "tool": "Edit", "agent": "builder", "file": "company/tasks/T-0030.md"}
+{"ts": "2026-11-21T18:44:11", "tool": "Write", "agent": "strategist", "file": "company/knowledge/research/2026-11-proven-sellers/claude-code-feasibility.md"}
+{"ts": "2026-11-21T18:44:17", "tool": "Edit", "agent": "strategist", "file": "company/knowledge/research/2026-11-proven-sellers/claude-code-feasibility.md"}
+{"ts": "2026-11-21T18:44:20", "tool": "Edit", "agent": "strategist", "file": "company/knowledge/research/2026-11-proven-sellers/claude-code-feasibility.md"}
+{"ts": "2026-11-21T18:44:21", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0029.md"}
+{"ts": "2026-11-21T18:44:35", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0029.md"}
