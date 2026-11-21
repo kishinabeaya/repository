@@ -223,3 +223,5 @@
 {"ts": "2026-11-21T18:44:21", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0029.md"}
 {"ts": "2026-11-21T18:44:35", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0029.md"}
 {"ts": "2026-11-21T18:48:07", "tool": "Write", "file": "company/decisions/D-0025.md"}
+{"ts": "2026-11-21T19:09:52", "tool": "Write", "file": "company/tasks/T-0031.md"}
+{"ts": "2026-11-21T19:10:00", "tool": "Write", "file": "company/tasks/T-0032.md"}
