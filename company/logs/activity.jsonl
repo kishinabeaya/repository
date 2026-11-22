@@ -242,3 +242,6 @@
 {"ts": "2026-11-22T14:34:00", "tool": "Write", "file": "company/decisions/D-0028.md"}
 {"ts": "2026-11-22T14:34:14", "tool": "Write", "file": "company/tasks/T-0035.md"}
 {"ts": "2026-11-22T14:34:23", "tool": "Write", "file": "company/tasks/T-0036.md"}
+{"ts": "2026-11-22T14:38:56", "tool": "Write", "agent": "strategist", "file": "company/knowledge/research/2026-11-fastest-revenue/part1-market-opportunities.md"}
+{"ts": "2026-11-22T14:39:01", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0035.md"}
+{"ts": "2026-11-22T14:39:03", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0035.md"}
