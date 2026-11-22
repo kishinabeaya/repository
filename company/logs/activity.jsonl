@@ -268,3 +268,7 @@
 {"ts": "2026-11-22T15:53:55", "tool": "Write", "agent": "strategist", "file": "company/knowledge/research/2026-11-explore/commerce.md"}
 {"ts": "2026-11-22T15:53:59", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0042.md"}
 {"ts": "2026-11-22T15:53:59", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0042.md"}
+{"ts": "2026-11-22T15:54:43", "tool": "Write", "agent": "strategist", "file": "company/knowledge/research/2026-11-explore/b2b.md"}
+{"ts": "2026-11-22T15:54:47", "tool": "Write", "agent": "strategist", "file": "company/knowledge/research/2026-11-explore/education.md"}
+{"ts": "2026-11-22T15:54:51", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0041.md"}
+{"ts": "2026-11-22T15:54:52", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0041.md"}
