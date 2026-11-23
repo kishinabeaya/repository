@@ -295,3 +295,5 @@
 {"ts": "2026-11-22T16:14:23", "tool": "Edit", "agent": "strategist", "file": "company/strategy/fastest-revenue-proposal-v2.md"}
 {"ts": "2026-11-22T16:14:27", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0046.md"}
 {"ts": "2026-11-22T16:14:33", "tool": "Edit", "agent": "strategist", "file": "company/tasks/T-0046.md"}
+{"ts": "2026-11-23T02:43:26", "tool": "Write", "file": "company/decisions/D-0031.md"}
+{"ts": "2026-11-23T02:43:34", "tool": "Write", "file": "company/tasks/T-0047.md"}
